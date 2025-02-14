@@ -1,0 +1,27 @@
+<section
+  id="deleteCompanyModal"
+  class="bg-opacity-50 bg-slate-900 absolute top-0 w-full min-h-screen flex justify-center items-center hidden"
+>
+  <div class="bg-white w-80 h-[280px] rounded-xl p-4">
+    <div class="w-full flex justify-between items-center">
+      <div class="text-[35px]">😨</div>
+      <button
+        id="closeModalBtn"
+        class="btn btn-danger h-8 flex items-center justify-center"
+      >
+        x
+      </button>
+    </div>
+    <h2 class="mt-4 font-bold">Are you sure you want</h2>
+    <h2 class="mt-2 font-bold">to delete Company:</h2>
+    <h1 id="modalCompanyName" class="mt-3 font-bold text-[22px]"></h1>
+    <div class="w-full flex justify-end items-end mt-4">
+      <button
+        id="confirmDeleteBtn"
+        class="btn btn-primary h-8 flex items-center justify-center"
+      >
+        Yes!
+      </button>
+    </div>
+  </div>
+</section>

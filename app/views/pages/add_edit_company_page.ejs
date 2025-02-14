@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <% if (addOrEdit === "add") { %>
+    <title>Add a company!</title>
+
+    <% } else if (addOrEdit === "edit") { %>
+    <title>Edit company!</title>
+    <% } %>
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Akshar"
+    />
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  </head>
+  <body
+    class="px-[20px] py-[20px] sm:px-[60px] sm:py-[40px] md:px-[80px] md:py-[60px] lg:px-[120px] lg:py-[80px] flex justify-start items-start flex-column"
+  >
+    <% if (addOrEdit === "add") { %>
+    <h2>Add a company!</h2>
+    <form
+      id="addCompanyForm"
+      method="post"
+      class="mt-4 w-full flex flex-col justify-start items-center gap-y-4"
+    >
+      <input
+        type="text"
+        class="form-control w-full"
+        placeholder="Company name"
+        name="company_name"
+        id="company_name"
+      />
+      <textarea
+        type="text"
+        class="form-control w-full"
+        placeholder="Company address"
+        name="company_address"
+        id="company_address"
+      ></textarea>
+      <input
+        type="text"
+        class="form-control w-full"
+        placeholder="Company phone"
+        name="company_phone"
+        id="company_phone"
+      />
+
+      <div class="w-full flex justify-between items-center">
+        <a href="/company" class="btn btn-primary">Back</a>
+
+        <button type="submit" class="btn btn-primary">submit</button>
+      </div>
+    </form>
+    <% } else if (addOrEdit === "edit" && company != null) { %>
+    <h2>Edit company!</h2>
+    <form
+      id="editCompanyForm"
+      method="post"
+      class="mt-4 w-full flex flex-col justify-start items-center gap-y-4"
+    >
+      <input
+        type="text"
+        class="form-control w-full"
+        name="company_name"
+        id="company_name"
+        value="<%= company[0].company_name  %>"
+      />
+      <textarea
+        class="form-control w-full"
+        name="company_address"
+        id="company_address"
+      ><%= company[0].company_address %></textarea>
+      <input
+        type="text"
+        class="form-control w-full"
+        name="company_phone"
+        id="company_phone"
+        value="<%= company[0].company_phone %>"
+      />
+
+      <div class="w-full flex justify-between items-center">
+        <a href="/company" class="btn btn-primary">Back</a>
+
+        <button type="submit" class="btn btn-primary">submit</button>
+      </div>
+    </form>
+
+    <% } %>
+
+    <!-- scripts -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- AJAX CALLS -->
+    <script>
+      $(document).ready(function () {
+        $("#addCompanyForm").submit(function (e) {
+          e.preventDefault();
+          const company_name = $("#company_name").val();
+          const company_address = $("#company_address").val();
+          const company_phone = $("#company_phone").val();
+
+          const nullValidation =
+            company_name == null ||
+            company_address == null ||
+            company_phone == null;
+
+          if (nullValidation) {
+            alert("Please fill in all the fields.");
+            return;
+          }
+
+          $.ajax({
+            url: "/company/insert",
+            method: "POST",
+            contentType: "application/json",
+            processData: false,
+            data: JSON.stringify({
+              company_name: company_name,
+              company_address: company_address,
+              company_phone: company_phone,
+            }),
+            dataType: "json",
+            success: function (response) {
+              console.log("Company added successfully:", response);
+              $("#addCompanyForm")[0].reset();
+            },
+            error: function (error) {
+              console.error("Error adding company:", error);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

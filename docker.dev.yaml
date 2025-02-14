@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  panel:
+    build: "./"
+    image: "${IMAGE_NAME}:${IMAGE_VERSION}"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"
+        max-size: "100m"
+    env_file:
+     - env/dev.env
+    expose:
+     - "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+    - /usr/src/data/logs:/usr/src/app/logs
+    restart: on-failure
+    environment:
+      APP_PORT: 8000

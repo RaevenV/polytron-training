@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <!-- HAPUS FILE JIKA SUDAH TIDAK DIGUNAKAN!-->
+   <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   </head>
+   <body>
+      <input type="button" id="stopButton" value="Stop Listening"/>
+      <input type="button" id="addBtn" name="addBtn" value="Tambah"/>
+      <input type="button" id="minBtn" name="minBtn" value="Kurang"/>
+      <hr/>
+      <div id="content"></div>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+      <script nonce="rAnd0m">
+
+        function posting(data) {
+            $.ajax({
+                method: "GET",
+                url: data.url,
+                data: data.param,
+                error: function (jqXHR, exception) {
+                console.log(jqXHR)
+                if (jqXHR.status === 401) {
+                    window.location.href = '/panel/auth/logout'
+                }
+            },
+            }).done(data.done);
+        }
+
+        var source
+        source = new EventSource('/sse/init');
+        source.addEventListener('open', function(e) {
+            document.getElementById('content').innerHTML = 'Connections to the server established..<br/>';
+        }, false);
+        source.onmessage = function(e) {
+        document.getElementById('content').innerHTML = e.data;
+        }
+           
+        document.getElementById('stopButton').onclick=function(){
+            document.getElementById('content').innerHTML += 'Listening to server events stopped..<br/>';
+            source.close();
+        }
+
+        document.getElementById('addBtn').onclick=function(){
+            posting({
+                url: 'sse/addnum/+',
+                done: function (data) {
+                    console.log(data)
+                }
+            })
+        }
+
+        document.getElementById('minBtn').onclick=function(){
+            posting({
+                url: 'sse/addnum/-',
+                done: function (data) {
+                    console.log(data)
+                }
+            })
+        }
+
+      </script>
+      
+   </body>
+</html>
