@@ -10,6 +10,8 @@ const model_company = require("../models/model_company");
 const poly_logger = require("../module/poly_logger");
 const configuration = require("../module/configuration");
 
+router.use("/public", express.static("public"));
+
 router.get("/", async (req, res) => {
   //
   let configs = {
@@ -34,12 +36,9 @@ router.get("/", async (req, res) => {
 
 router.use("/company", c_company);
 
-
 router.get("/employee", async (req, res) => {
   return res.status(200).render("pages/employee_list_page");
 });
-
-
 
 router.get("/app-status", async (req, res) => {
   var status = "";

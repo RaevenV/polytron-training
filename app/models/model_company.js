@@ -24,10 +24,10 @@ module.exports = {
       return [null, error];
     }
   },
-  delete: async function(id){
+  delete: async function (id) {
     try {
       await mysql.connectAsync();
-      const sql = "DELETE FROM ms_company WHERE company_id = ?"
+      const sql = "DELETE FROM ms_company WHERE company_id = ?";
       const [result] = await mysql.executeAsync(sql, [id]);
       return [result, null];
     } catch (error) {
@@ -36,8 +36,7 @@ module.exports = {
     } finally {
       await mysql.endPool();
     }
-  }
-  ,
+  },
   get: async function () {
     try {
       await mysql.connectAsync();
@@ -52,15 +51,34 @@ module.exports = {
     }
   },
   getById: async function (id) {
-    console.log("Company ID:", id); // Debugging step to check the ID
+    console.log("Company ID:", id);
     try {
       await mysql.connectAsync();
       const sql = "SELECT * FROM ms_company WHERE company_id = ?";
       const [result] = await mysql.executeAsync(sql, [id]);
-      console.log("Result:", result); // Check what is returned
+      console.log("Result:", result);
       return [result, null];
     } catch (error) {
       console.error("Error getting the company :", error);
+      return [null, error];
+    } finally {
+      await mysql.endPool();
+    }
+  },
+  edit: async function (id, name, address, phone) {
+    console.log("Company ID:", id);
+    try {
+      await mysql.connectAsync();
+      const sql =
+        "UPDATE ms_company SET company_name=?, company_address=?, company_phone=? WHERE company_id = ?";
+      const [result] = await mysql.executeAsync(
+        sql,
+        [name, address, phone, id] // Pass all parameters in a single array
+      );
+      console.log("Result:", result);
+      return [result, null];
+    } catch (error) {
+      console.error("Error editing the company! :", error);
       return [null, error];
     } finally {
       await mysql.endPool();

@@ -4,30 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto"
-    />
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Akshar"
-    />
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <%-include('../partial/scripts/include_links') %>
 
     <title>Employee List</title>
   </head>
@@ -40,6 +17,8 @@
           <h2 class="text-lg md:text-2xl">Employee List</h2>
           <form action="/company/employee/addEdit" method="post">
             <input type="hidden" name="tableAction" value="add" />
+            <input type="hidden" name="company_id" value="<%= id %>" />
+
             <button type="submit" class="btn btn-primary">+</button>
           </form>
         </div>
@@ -74,14 +53,27 @@
                 >
                   view
                 </button>
-                <button
-                  type="button"
-                  class="text-[12px] sm:text-[14px] btn btn-warning text-white viewEmployeeBtn"
-                  data-company_id="<%= employee.company_id %>"
-                  data-employee_id="<%= employee.employee_id %>"
-                >
-                  edit
-                </button>
+
+                <form action="/company/employee/addEdit" method="post">
+                  <input type="hidden" name="tableAction" value="edit" />
+                  <input
+                    type="hidden"
+                    name="company_id"
+                    value="<%= employee.company_id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="employee_id"
+                    value="<%= employee.employee_id %>"
+                  />
+
+                  <button
+                    type="submit"
+                    class="text-[12px] sm:text-[14px] btn btn-warning text-white"
+                  >
+                    edit
+                  </button>
+                </form>
                 <button
                   type="button"
                   class="deleteEmployeeBtn text-[12px] sm:text-[14px] btn btn-danger text-white"
@@ -106,36 +98,7 @@
     <%- include('../partial/delete_employee_modal') %>
 
     <!-- scripts -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
+    <%- include('../partial/scripts/include_scripts.ejs') %>
 
     <script>
       $(document).ready(function () {
@@ -182,47 +145,53 @@
       function handleViewClick(event) {
         event.preventDefault();
 
+        const employeePlaceholder = $("#viewEmployeePlaceholder");
         const companyId = $(this).data("company_id");
         const employeeId = $(this).data("employee_id");
-        $.ajax({
-          url: "/company/employee/",
-          type: "POST",
-          data: JSON.stringify({
-            company_id: companyId,
-            employee_id: employeeId,
-          }),
-          processData: false,
-          contentType: "application/json",
-          success: function (data) {
-            const employeePlaceholder = $("#viewEmployeePlaceholder");
 
-            if (data.employee) {
-              employeePlaceholder.html(`
-                <div class="h-full p-8 rounded-2xl bg-primary w-full  flex justify-center align-center flex-col">
-                  <div class="w-full bg-red-500 h-40 mb-4">t</div>
+        if (!employeePlaceholder.hasClass("hidden")) {
+          employeePlaceholder.addClass("hidden");
+          $("#viewEmployeeList")
+            .removeClass("w-full md:w-2/3")
+            .addClass("w-full");
 
-                  <div>Name: ${data.employee.employee_name}</div>
-                  <div>Birthday: ${new Date(
-                    data.employee.employee_birthday
-                  ).toLocaleDateString()}</div>
-                  <div>Gender: ${data.employee.employee_gender}</div>
-                </div>
-              `);
-            } else {
-              employeePlaceholder.html(`
-                <div class="w-full h-full flex justify-center align-center">
-                  Click an employee to view details!
-                </div>
-              `);
-            }
+          employeePlaceholder.empty();
+        } else {
+          $.ajax({
+            url: "/company/employee/",
+            type: "POST",
+            data: JSON.stringify({
+              company_id: companyId,
+              employee_id: employeeId,
+            }),
+            processData: false,
+            contentType: "application/json",
+            success: function (data) {
+              if (data.employee) {
+                employeePlaceholder.html(`
+                  <div class="shadow-md text-black h-full p-8 rounded-2xl bg-slate-200 w-full flex justify-center align-center flex-col">
+                    <img src="/${
+                      data.employee.employee_picture
+                    }" alt="employee_profile" class="w-full rounded-xl h-60 mb-4">
+                    <div>Name: ${data.employee.employee_name}</div>
+                    <div>Birthday: ${new Date(
+                      data.employee.employee_birthday
+                    ).toLocaleDateString()}</div>
+                    <div>Gender: ${data.employee.employee_gender}</div>
+                    <div>Gender: ${data.employee.employee_phone}</div>
+                  </div>
+                `);
 
-            $("#viewEmployeeList")
-              .removeClass("w-full")
-              .addClass("w-full md:w-2/3");
-            employeePlaceholder.removeClass("hidden");
-          },
-          error: handleError,
-        });
+                // Show the placeholder and adjust the layout
+                $("#viewEmployeeList")
+                  .removeClass("w-full")
+                  .addClass("w-full md:w-2/3");
+                employeePlaceholder.removeClass("hidden");
+              }
+            },
+            error: handleError,
+          });
+        }
       }
 
       function handleError() {
