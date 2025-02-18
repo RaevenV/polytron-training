@@ -15,157 +15,217 @@
     <%-include('../partial/scripts/include_links') %>
     
   </head>
-  <body
-    class="px-[20px] py-[20px] sm:px-[60px] sm:py-[40px] md:px-[80px] md:py-[60px] lg:px-[120px] lg:py-[80px] flex justify-start items-start flex-column"
-  >
-    <% if (addOrEdit === "add") { %>
-    <h2>Add an employee!</h2>
-    <form
-      enctype="multipart/form-data"
-      id="addEmployeeForm"
-      method="post"
-      action="/company/employee/insert"
-      class="mt-4 w-full flex flex-col justify-start items-center gap-y-4"
+  <body class="relative min-h-screen">
+    <%- include('../partial/header') %>
+
+    <div
+      class="px-[24px] py-[100px] sm:px-[60px] md:px-[80px] lg:px-[120px] flex justify-start items-start flex-col"
     >
-      <input type="hidden" name="company_id" value="<%= company_id %>" />
-      <div class="w-full flex justify-between items-center gap-x-2">
-        <div class="md:text-nowrap md:text-[16px] text-[13px]">
-          Employee Name :
+      <% if (addOrEdit === "add") { %>
+      <h2 class="text-[20px]">Add an employee!</h2>
+      <hr class="h-2">
+      <form
+        enctype="multipart/form-data"
+        id="addEmployeeForm"
+        method="post"
+        action="/company/employee/addEdit/insert"
+        class="mt-4 w-full flex flex-col justify-start items-center gap-y-6"
+      >
+        <input type="hidden" name="company_id" value="<%= company_id %>" />
+        <div class="w-full flex justify-between items-center gap-x-2">
+          <div class="md:text-nowrap md:text-[16px] text-[13px]">
+            Employee Name :
+          </div>
+          <div class="w-full">
+            <input
+            type="text"
+            class="form-control w-full"
+            placeholder="employee name"
+            name="employee_name"
+            id="employee_name"
+            required
+            />
+            <% if (errors && errors.find(e => e.includes('Employee name'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please enter a valid name (1-100)</div>
+            <% } %>
+          </div>
+          
         </div>
-        <input
-          type="text"
-          class="form-control w-full"
-          placeholder="employee name"
-          name="employee_name"
-          id="employee_name"
-          required
-        />
-      </div>
 
-      <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
-        <div class="text-nowrap md:text-[16px] text-[13px]">Gender :</div>
-        <select name="employee_gender" class="form-select" id="employee_gender" required>
-          <option selected value="">-</option>
-
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-
-      <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
-        <div class="text-nowrap md:text-[16px] text-[13px]">Birthday :</div>
-        <input type="date" class="form-control" name="employee_birthday" required />
-      </div>
-
-      <div class="w-full flex justify-between items-center gap-x-2">
-        <div class="md:text-nowrap md:text-[16px] text-[13px]">
-          Profile Pic :
+        <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
+          <div class="text-nowrap md:text-[16px] text-[13px]">Gender :</div>
+          <div class="w-full">
+            <select name="employee_gender" class="form-select" id="employee_gender" required>
+            <option selected value="">-</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <% if (errors && errors.find(e => e.includes('Employee gender'))) { %>
+            <div class="text-red-500 text-sm mt-1">Please select between Male or Female</div>
+          <% } %>
+          </div>
+          
         </div>
-        <input
-          type="file"
-          class="form-control w-full"
-          placeholder="08..."
-          name="employee_picture"
-          id="employee_picture"
-        />
-      </div>
 
-      <div class="w-full flex justify-between items-center gap-x-2">
-        <div class="md:text-nowrap md:text-[16px] text-[13px]">Phone :</div>
-        <input
-          type="text"
-          class="form-control w-full"
-          placeholder="08..."
-          name="employee_phone"
-          id="employee_phone"
-          required
-        />
-      </div>
-
-      <!-- JANGAN LUPA GANTI INI -->
-      <div class="w-full flex justify-between items-center mt-8">
-        <a href="/company" class="btn btn-primary">Back</a>
-
-        <button type="submit" class="btn btn-primary">submit</button>
-      </div>
-    </form>
-
-    <!-- edit formss -->
-    <% } else if (addOrEdit === "edit" && employee != null) { %>
-    <h2>Edit employee!</h2>
-    <form
-      enctype="multipart/form-data"
-      id="addEmployeeForm"
-      method="post"
-      action="/company/employee/addEdit/edit"
-      class="mt-4 w-full flex flex-col justify-start items-center gap-y-4"
-    >
-      <input type="hidden" name="employee_id" value="<%= employee[0].employee_id %>" />
-      <div class="w-full flex justify-between items-center gap-x-2">
-        <div class="md:text-nowrap md:text-[16px] text-[13px]">
-          Employee Name :
+        <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
+          <div class="text-nowrap md:text-[16px] text-[13px]">Birthday :</div>
+          <div class="w-full">
+            <input type="date" class="form-control" name="employee_birthday" required />
+            <% if (errors && errors.find(e => e.includes('Employee birthday'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please enter a valid birth date</div>
+            <% } %>
+          </div>
         </div>
-        <input
-          type="text"
-          class="form-control w-full"
-          placeholder="employee name"
-          name="employee_name"
-          id="employee_name"
-          value="<%= employee[0].employee_name %>"
-        />
-      </div>
 
-      <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
-        <div class="text-nowrap md:text-[16px] text-[13px]">Gender :</div>
-        <select name="employee_gender" class="form-select" id="employee_gender">
-          <option value="" <%= employee[0].employee_gender === "" ? "selected" : "" %>>-</option>
-          <option value="Male" <%= employee[0].employee_gender === "Male" ? "selected" : "" %>>Male</option>
-          <option value="Female" <%= employee[0].employee_gender === "Female" ? "selected" : "" %>>Female</option>
-        </select>
-      </div>
-
-      <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
-        <div class="text-nowrap md:text-[16px] text-[13px]">Birthday :</div>
-        <input type="date" class="form-control" name="employee_birthday" value="<%= employee[0].employee_birthday %>" required />
-      </div>
-
-      <div class="w-full flex justify-between items-center gap-x-2">
-        <div class="md:text-nowrap md:text-[16px] text-[13px]">
-          Profile Pic :
+        <div class="w-full flex justify-between items-center gap-x-2">
+          <div class="text-nowrap md:text-[16px] text-[13px]">
+            Profile Pic :
+          </div>
+          <div class="w-full">
+            <input
+            type="file"
+            class="form-control w-full"
+            placeholder="08..."
+            name="employee_picture"
+            id="employee_picture"
+            />
+            <% if (errors && errors.find(e => e.includes('Employee picture'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please input file with a valid format (jpg,png,jpeg)</div>
+            <% } %>
+          </div>
         </div>
-        <input
-          type="file"
-          class="form-control w-full"
-          placeholder="08..."
-          name="employee_picture"
-          id="employee_picture"
-          value="<%= employee[0].employee_picture %>"
-        />
-      </div>
-      <input type="hidden" name="old_picture" value="<%= employee[0].employee_picture %>" />
 
+        <div class="w-full flex justify-between items-center gap-x-2">
+          <div class="text-nowrap md:text-[16px] text-[13px]">Phone :</div>
+          <div class="w-full">
+            <input
+            type="text"
+            class="form-control w-full"
+            placeholder="08..."
+            name="employee_phone"
+            id="employee_phone"
+            required
+            />
+            <% if (errors && errors.find(e => e.includes('Employee phone'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please enter a valid phone number</div>
+            <% } %>
+          </div>
+        </div>
 
-      <div class="w-full flex justify-between items-center gap-x-2">
-        <div class="md:text-nowrap md:text-[16px] text-[13px]">Phone :</div>
-        <input
-          type="text"
-          class="form-control w-full"
-          placeholder="08..."
-          name="employee_phone"
-          id="employee_phone"
-          value="<%= employee[0].employee_phone %>"
-        />
-      </div>
+        <!-- JANGAN LUPA GANTI INI -->
+        <div class="w-full flex justify-between items-center mt-8">
+          <a onclick="window.history.back();" class="btn btn-primary">Back</a>
+          <button type="submit" class="btn btn-primary">submit</button>
+        </div>
+      </form>
 
-      <!-- JANGAN LUPA GANTI INI -->
-      <div class="w-full flex justify-between items-center mt-8">
-        <a href="/company" class="btn btn-primary">Back</a>
+      <!-- edit forms -->
+      <% } else if (addOrEdit === "edit" && employee != null) { %>
+      <h2 class="text-[20px]">Edit employee!</h2>
+      <hr class="h-2">
+      <form
+        enctype="multipart/form-data"
+        id="addEmployeeForm"
+        method="post"
+        action="/company/employee/addEdit/edit"
+        class="mt-4 w-full flex flex-col justify-start items-center gap-y-4"
+      >
+        <input type="hidden" name="company_id" value="<%= company_id %>" />
+        <input type="hidden" name="employee_id" value="<%= employee[0].employee_id %>" />
+        
+        <div class="w-full flex justify-between items-center gap-x-2">
+          <div class="md:text-nowrap md:text-[16px] text-[13px]">
+            Employee Name :
+          </div>
+          <div class="w-full">
+            <input
+              type="text"
+              class="form-control w-full"
+              placeholder="employee name"
+              name="employee_name"
+              id="employee_name"
+              value="<%= employee[0].employee_name %>"
+            />
+            <% if (errors && errors.find(e => e.includes('Employee name'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please enter a valid name (1-100)</div>
+            <% } %>
+          </div>
+        </div>
 
-        <button type="submit" class="btn btn-primary">submit</button>
-      </div>
-    </form>
+        <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
+          <div class="text-nowrap md:text-[16px] text-[13px]">Gender :</div>
+          <div class="w-full">
+            <select name="employee_gender" class="form-select" id="employee_gender">
+              <option value="" <%= employee[0].employee_gender === "" ? "selected" : "" %>>-</option>
+              <option value="Male" <%= employee[0].employee_gender === "Male" ? "selected" : "" %>>Male</option>
+              <option value="Female" <%= employee[0].employee_gender === "Female" ? "selected" : "" %>>Female</option>
+            </select>
+            <% if (errors && errors.find(e => e.includes('Employee gender'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please select between Male or Female</div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="w-full flex justify-start items-center gap-x-8 md:gap-x-2">
+          <div class="text-nowrap md:text-[16px] text-[13px]">Birthday :</div>
+          <div class="w-full">
+            <input type="date" class="form-control" name="employee_birthday" value="<%= employee[0].employee_birthday %>" required />
+            <% if (errors && errors.find(e => e.includes('Employee birthday'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please enter a valid birth date</div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="w-full flex justify-between items-center gap-x-2">
+          <div class="md:text-nowrap md:text-[16px] text-[13px]">
+            Profile Pic :
+          </div>
+          <div class="w-full">
+            <input
+              type="file"
+              class="form-control w-full"
+              placeholder="08..."
+              name="employee_picture"
+              id="employee_picture"
+              value="<%= employee[0].employee_picture %>"
+            />
+            <% if (errors && errors.find(e => e.includes('Employee picture'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please input file with a valid format (jpg,png,jpeg,webp)</div>
+            <% } %>
+          </div>
+        </div>
+        
+        <!-- Just in case picturenya gamasuk-->
+        <input type="hidden" name="old_picture" value="<%= employee[0].employee_picture %>" />
+
+        <div class="w-full flex justify-between items-center gap-x-2">
+          <div class="md:text-nowrap md:text-[16px] text-[13px]">Phone :</div>
+          <div class="w-full">
+            <input
+              type="text"
+              class="form-control w-full"
+              placeholder="08..."
+              name="employee_phone"
+              id="employee_phone"
+              value="<%= employee[0].employee_phone %>"
+            />
+
+            <% if (errors && errors.find(e => e.includes('Employee phone'))) { %>
+              <div class="text-red-500 text-sm mt-1">Please enter a valid phone number</div>
+            <% } %>
+          </div>
+        </div>
+        <div class="w-full flex justify-between items-center mt-8">
+          <a onclick="window.history.back();" class="btn btn-primary">Back</a>
+
+          <button type="submit" class="btn btn-primary">submit</button>
+        </div>
+      </form>
     <% } %>
-
+  
+    </div>
+    
+    <%- include('../partial/footer') %>
     <%- include('../partial/scripts/include_scripts') %>
 
   </body>

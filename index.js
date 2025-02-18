@@ -6,7 +6,6 @@ const helmet = require('helmet')
 const c_main = require('./app/controllers/controller_main')
 const configuration = require("./app/module/configuration")
 
-console.log(process.env)
 // Enable proxy for get secure https
 app.enable("trust proxy")
 
@@ -30,4 +29,4 @@ logger.init()
 
 app.use('/', c_main)
 
-app.listen(configuration["APP_PORT"], () => console.log('Example app listening on port ' + configuration["APP_PORT"]))
+app.listen(configuration["APP_PORT"], () => console.log('App is listening on port ' + configuration["APP_PORT"]))

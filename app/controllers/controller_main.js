@@ -28,17 +28,12 @@ router.get("/", async (req, res) => {
     NPM_SCRIPT: configuration["npm_lifecycle_script"],
   };
 
-  console.log(configuration);
   return res.status(200).render("pages/example_page", {
     configs,
   });
 });
 
 router.use("/company", c_company);
-
-router.get("/employee", async (req, res) => {
-  return res.status(200).render("pages/employee_list_page");
-});
 
 router.get("/app-status", async (req, res) => {
   var status = "";

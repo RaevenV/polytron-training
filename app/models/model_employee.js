@@ -1,6 +1,7 @@
 const mysql = require("../module/mysql_connector");
 
 module.exports = {
+  //function untuk edit employee, menggunakan id
   edit: async function (id, name, gender,birthday,picture, phone) {
     console.log("Employee ID:", id);
     try {
@@ -20,6 +21,7 @@ module.exports = {
       await mysql.endPool();
     }
   },
+  //function untuk mengambil semua employee data
   get: async function (id) {
     try {
       await mysql.connectAsync();
@@ -34,6 +36,8 @@ module.exports = {
       await mysql.endPool();
     }
   },
+
+  //function untuk mengambil data employee spesifik berdasarkan id
   getById: async function (id) {
     console.log("Employee ID:", id);
     try {
@@ -62,6 +66,7 @@ module.exports = {
       await mysql.endPool();
     }
   },
+  //function untuk data insertion ke ms_employee menggunakan parameterized queries
   insert: async function (data) {
     try {
       await mysql.connectAsync();

@@ -9,9 +9,11 @@
 
     <title>Company List</title>
   </head>
-  <body class="relative">
+  <body class="relative min-h-screen">
+    <%- include('../partial/header') %>
+
     <div
-      class="px-[24px] py-[30px] sm:px-[60px] sm:py-[40px] md:px-[80px] md:py-[60px] lg:px-[120px] lg:py-[80px] flex justify-start items-start flex-col"
+      class="px-[24px] py-[100px] sm:px-[60px] md:px-[80px] lg:px-[120px] flex justify-start items-start flex-col"
     >
       <div class="w-full h-20 flex justify-between items-start">
         <h2 class="text-[20px] font-bold">Companies List</h2>
@@ -34,9 +36,15 @@
         <tbody class="">
           <% companies.forEach(company => { %>
           <tr>
-            <td scope="row"><%= company.company_name %></td>
-            <td><%= company.company_phone %></td>
-            <td><%= company.company_address %></td>
+            <td scope="row" class="text-[12px] sm:text-[16px]">
+              <%= company.company_name %>
+            </td>
+            <td class="text-[12px] sm:text-[16px]">
+              <%= company.company_phone %>
+            </td>
+            <td class="text-[12px] sm:text-[16px]">
+              <%= company.company_address %>
+            </td>
             <td
               class="flex justify-start items-center gap-x-2 gap-y-2 flex-wrap sm:flex-nowrap"
             >
@@ -48,7 +56,7 @@
                 />
                 <button
                   type="submit"
-                  class="text-[12px] sm:text-[14px] btn btn-primary text-white"
+                  class="text-[12px] lg:text-[14px] btn btn-primary text-white"
                 >
                   view employees
                 </button>
@@ -61,14 +69,17 @@
                   name="company_id"
                   value="<%= company.company_id %>"
                 />
-                <button type="submit" class="btn btn-warning text-white">
+                <button
+                  type="submit"
+                  class="btn btn-warning text-white text-[12px] lg:text-[14px]"
+                >
                   edit
                 </button>
               </form>
 
               <button
                 type="button"
-                class="text-[12px] sm:text-[14px] btn btn-danger text-white deleteCompanyBtn"
+                class="text-[12px] lg:text-[14px] btn btn-danger text-white deleteCompanyBtn"
                 data-company-id="<%= company.company_id %>"
                 data-company-name="<%= company.company_name %>"
               >
@@ -81,9 +92,12 @@
       </table>
     </div>
 
+    <%- include('../partial/footer') %> 
     <%- include('../partial/delete_company_modal') %>
-    <%-include('../partial/scripts/include_scripts') %>
+    <%- include('../partial/scripts/include_scripts') %>
 
+    <!-- Function ini untuk menampilkan deleteCompanyModal saat deleteCompanyBtn ditekan -->
+    <!-- dimana pada deleteCompanyModal, terdapat tombol konfirmasi untuk memastikan tidak ada ketidaksengajaan -->
     <script>
       $(document).ready(function () {
         $(".deleteCompanyBtn").on("click", function () {
