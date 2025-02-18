@@ -54,8 +54,8 @@ module.exports = {
       await mysql.endPool();
     }
   },
-  //function untuk mengambil data spesifik dari ms_company berdasarkan id
 
+  //function untuk mengambil data spesifik dari ms_company berdasarkan id
   getById: async function (id) {
     console.log("Company ID:", id);
     try {

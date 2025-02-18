@@ -74,7 +74,6 @@
                     name="employee_id"
                     value="<%= employee.employee_id %>"
                   />
-
                   <button
                     type="submit"
                     class="text-[12px] md:text-[14px] btn btn-warning text-white"
@@ -116,8 +115,6 @@
       function handleDeleteClick() {
         const employeeId = $(this).data("employee-id");
         const employeeName = $(this).data("employee-name");
-        console.log(employeeId);
-        console.log(employeeName);
         $("#modalEmployeeName").text(employeeName);
         $("#deleteEmployeeModal").removeClass("hidden");
 
@@ -154,11 +151,9 @@
 
       function handleViewClick(event) {
         event.preventDefault();
-
         const employeePlaceholder = $("#viewEmployeePlaceholder");
         const companyId = $(this).data("company_id");
         const employeeId = $(this).data("employee_id");
-
         $.ajax({
           url: "/company/employee/",
           type: "POST",
@@ -180,8 +175,7 @@
 
                     <hr class="mb-2">
 
-                    
-                    <div>Name: ${data.employee.employee_name}</div>
+                    <div>Name : ${data.employee.employee_name}</div>
                     <div>Birthday : ${new Date(
                       data.employee.employee_birthday
                     ).toLocaleDateString()}</div>

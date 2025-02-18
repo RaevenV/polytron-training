@@ -174,7 +174,6 @@ router.put("/delete", async (req, res) => {
 
   try {
     const [employee, error] = await model_employee.delete(id);
-
     return res;
   } catch (error) {
     return res.status(500).json({
